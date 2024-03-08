@@ -2,7 +2,7 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_instance" "my-instance" {
+resource "aws_instance" "demo-server" {
   ami   = "ami-07d9b9ddc6cd8dd30"
   instance_type = "t2.micro"
   key_name = "dpp"
@@ -11,7 +11,8 @@ resource "aws_instance" "my-instance" {
 resource "aws_security_group" "demo-sg" {
 name = "demo-sg"
 description = "SSH Access"
-vpc_id = aws_vpc.Nam-vpc.id
+
+
 ingress {
 description = "Shh access"
 from_port = 22
@@ -29,49 +30,4 @@ ipv6_cidr_blocks = ["::/0"]
 tags = {
 Name = "ssh-port"
 }
-}
-resource "aws_vpc" "Nam-vpc" {
-cidr_block = "10.1.0.0/16"
-tags = {
-Name = "Nam-vpc"
-}
-}
-resource "aws_subnet" "Nam-public-subnet-01" {
-vpc_id = aws_vpc.Nam-vpc.id
-cidr_block = "10.1.1.0/24"
-map_public_ip_on_launch = "true"
-availability_zone = "us-east-1a"
-tags = {
-Name = "Nam-public-subent-01"
-}
-}
-resource "aws_subnet" "Nam-public-subnet-02" {
-vpc_id = aws_vpc.Nam-vpc.id
-cidr_block = "10.1.2.0/24"
-map_public_ip_on_launch = "true"
-availability_zone = "us-east-1b"
-tags = {
-Name = "Nam-public-subent-02"
-}
-}
-resource "aws_internet_gateway" "Nam-igw" {
-vpc_id = aws_vpc.Nam-vpc.id
-tags = {
-Name = "Nam-igw"
-}
-}
-resource "aws_route_table" "Nam-public-rt" {
-vpc_id = aws_vpc.Nam-vpc.id
-route {
-cidr_block = "0.0.0.0/0"
-gateway_id = aws_internet_gateway.Nam-igw.id
-}
-}
-resource "aws_route_table_association" "Nam-rta-public-subnet-01" {
-subnet_id = aws_subnet.Nam-public-subnet-01.id
-route_table_id = aws_route_table.Nam-public-rt.id
-}
-resource "aws_route_table_association" "Nam-rta-public-subnet-02" {
-subnet_id = aws_subnet.Nam-public-subnet-02.id
-route_table_id = aws_route_table.Nam-public-rt.id
 }
