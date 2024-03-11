@@ -1,0 +1,25 @@
+cat > jenkins-slaves-setup.yaml
+---
+- hosts: jenkins-slave
+  become: true 
+  tasks: 
+  - name: update ununtu repo and cache
+    apt:
+      update_cache: yes
+      cache_valid_time: 3600
+  
+  - name: install java 
+    apt: 
+      name: openjdk-17-jre
+      state: present
+
+  - name: download maven package
+    get_url: 
+      url: https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
+      dest: /opt
+
+  - name: extra maven package
+    unarchive: 
+      src: /opt/apache-maven-3.9.6-bin.tar.gz
+      dest: /opt 
+      remote_src: yes
