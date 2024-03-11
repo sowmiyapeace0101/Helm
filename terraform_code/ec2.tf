@@ -10,7 +10,7 @@ resource "aws_instance" "my-ec2" {
  vpc_security_group_ids = [aws_security_group.demo-sg.id]
   subnet_id = aws_subnet.my-subnet-1.id
 
-for_each = toset(["Jenkins-Master", "Jenikns-Slave", "Ansible"])
+for_each = toset(["Jenikns-Slave"])
 tags = {
 Name = "${each.key}"
 }
