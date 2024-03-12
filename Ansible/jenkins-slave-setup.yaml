@@ -1,4 +1,3 @@
-cat > jenkins-slaves-setup.yaml
 ---
 - hosts: jenkins-slave
   become: true 
